@@ -31,6 +31,8 @@ dependencies:
   intl: ^0.16.1
   charts_flutter: ^0.8.1 
   flutter_local_notifications: ^1.2.1
+  geolocator: ^5.3.0
+  app_settings: ^3.0.1
 
 dev_dependencies:
   flutter_test:
