@@ -27,7 +27,7 @@ String handleError(DioError error) {
       errorMsg = 'The server took too long to respond!';
       break;
     case DioErrorType.DEFAULT:
-      errorMsg = 'No Internet Connection!';
+      errorMsg = error.message;
       break;
     case DioErrorType.RECEIVE_TIMEOUT:
       errorMsg = 'The server took too long to respond!';

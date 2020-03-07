@@ -5,6 +5,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:weatherapp/dialogs/location_dialog.dart';
 import 'package:weatherapp/utils/sharedpreference_helper.dart';
 
+import 'get_current_weather_bloc.dart';
+
 class GetCurrentLocationBloc {
   Geolocator geolocator = Geolocator();
   Position userLocation;
@@ -33,6 +35,11 @@ class GetCurrentLocationBloc {
             SharedPreferenceHelper.setLongitude(currentLocation.longitude);
           }
           behaviorSubject.sink.add(currentLocation);
+
+          ///Here call the [Get Current Weather API]
+          ///pass the [Latitude] and [Longitude] to the API, which we are getting from the above call.
+          getCurrentWeatherBloc.getCurrentWeather(
+              currentLocation.latitude, currentLocation.longitude);
         } catch (e) {
           currentLocation = null;
         }

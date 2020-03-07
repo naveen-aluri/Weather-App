@@ -11,7 +11,7 @@ class ApiProvider {
   Future<WeatherModel> getCurrentWeather(double lat, double lng) async {
     try {
       Response response = await ApiManager.dio()
-          .post('/weather?lat=$lat&lon=$lng&appid=${Constants.apiKey}');
+          .get('/data/2.5/weather?lat=$lat&lon=$lng&appid=${Constants.apiKey}');
       return WeatherModel.fromJson(response.data);
     } on DioError catch (e) {
       displayErrorMsg(e);
@@ -22,8 +22,8 @@ class ApiProvider {
   ///API to get the past 16 days Weather History.
   Future<WeatherHistory> getWeatherHistory(double lat, double lng) async {
     try {
-      Response response = await ApiManager.dio().post(
-          '/forecast/daily?lat=$lat&lon=$lng&appid=${Constants.apiKey}&cnt=17');
+      Response response = await ApiManager.dio().get(
+          '/data/2.5/forecast/daily?lat=$lat&lon=$lng&appid=${Constants.apiKey}&cnt=17');
       return WeatherHistory.fromJson(response.data);
     } on DioError catch (e) {
       displayErrorMsg(e);
