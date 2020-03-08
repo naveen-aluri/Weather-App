@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:flutter/material.dart';
+import 'package:weatherapp/bloc/chart_values_bloc.dart';
 import 'package:weatherapp/models/weather_history.dart';
 
 class ForeCastChart extends StatefulWidget {
@@ -49,8 +50,22 @@ class _ForeCastChartState extends State<ForeCastChart> {
               titleOutsideJustification:
                   charts.OutsideJustification.middleDrawArea),
         ],
+        selectionModels: [
+          new charts.SelectionModelConfig(
+            type: charts.SelectionModelType.info,
+            changedListener: _onSelectionChanged,
+          )
+        ],
       ),
     );
+  }
+
+  _onSelectionChanged(charts.SelectionModel model) {
+    final selectedDatum = model.selectedDatum;
+
+    ChartValue chartValue = new ChartValue();
+    chartValue.dt = selectedDatum[0].datum.data.dt;
+    chartValuesBloc.setValue(chartValue);
   }
 
   /// Create one series with Weather data.
@@ -61,15 +76,16 @@ class _ForeCastChartState extends State<ForeCastChart> {
           isUtc: true);
       data.add(TimeSeriesSales(
           DateTime(date.year, date.month, date.day, date.hour, date.minute),
-          (element.temp.day - 273.15).round()));
+          element));
     });
 
     return [
       new charts.Series<TimeSeriesSales, DateTime>(
-        id: 'Sales',
+        id: 'weather',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales weather, _) => weather.time,
+        measureFn: (TimeSeriesSales weather, _) =>
+            (weather.data.temp.day - 273.15).round(),
         data: data,
       )..setAttribute(charts.measureAxisIdKey, secondaryMeasureAxisId),
     ];
@@ -78,7 +94,7 @@ class _ForeCastChartState extends State<ForeCastChart> {
 
 class TimeSeriesSales {
   final DateTime time;
-  final int sales;
+  final ListElement data;
 
-  TimeSeriesSales(this.time, this.sales);
+  TimeSeriesSales(this.time, this.data);
 }
