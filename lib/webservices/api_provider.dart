@@ -12,6 +12,7 @@ class ApiProvider {
     try {
       Response response = await ApiManager.dio()
           .get('/data/2.5/weather?lat=$lat&lon=$lng&appid=${Constants.apiKey}');
+
       return WeatherModel.fromJson(response.data);
     } on DioError catch (e) {
       displayErrorMsg(e);

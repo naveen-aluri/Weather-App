@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:weatherapp/bloc/get_local_current_weather_bloc.dart';
 import 'package:weatherapp/dialogs/location_dialog.dart';
 import 'package:weatherapp/utils/sharedpreference_helper.dart';
 
@@ -35,6 +36,9 @@ class GetCurrentLocationBloc {
             SharedPreferenceHelper.setLongitude(currentLocation.longitude);
           }
           behaviorSubject.sink.add(currentLocation);
+
+          ///Call local weather Bloc.
+          getLocalCurrentWeatherBloc.getLocalCurrentWeather();
 
           ///Here call the [Get Current Weather API]
           ///pass the [Latitude] and [Longitude] to the API, which we are getting from the above call.

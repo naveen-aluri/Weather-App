@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weatherapp/bloc/get_current_location_bloc.dart';
 import 'package:weatherapp/bloc/get_current_weather_bloc.dart';
+import 'package:weatherapp/bloc/get_local_current_weather_bloc.dart';
 import 'package:weatherapp/models/weather_model.dart';
 
 class CurrentaWeatherPage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _CurrentaWeatherPageState extends State<CurrentaWeatherPage>
   @override
   void dispose() {
     getCurrentLocationBloc.dispose();
-    getCurrentWeatherBloc.dispose();
+    getLocalCurrentWeatherBloc.dispose();
     super.dispose();
   }
 
@@ -43,14 +44,14 @@ class _CurrentaWeatherPageState extends State<CurrentaWeatherPage>
         width: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/images/strom.png'), fit: BoxFit.cover),
+              image: AssetImage('assets/images/clear.png'), fit: BoxFit.cover),
         ),
         child: StreamBuilder(
             stream: getCurrentLocationBloc.currentLocationObservable,
             builder: (context, AsyncSnapshot<Position> locationSnapshot) {
               if (locationSnapshot.hasData) {
                 return StreamBuilder(
-                    stream: getCurrentWeatherBloc.responseData,
+                    stream: getLocalCurrentWeatherBloc.responseData,
                     builder:
                         (context, AsyncSnapshot<WeatherModel> weatherSnapshot) {
                       if (weatherSnapshot.hasData) {
@@ -70,7 +71,7 @@ class _CurrentaWeatherPageState extends State<CurrentaWeatherPage>
                               ),
                               SizedBox(height: 10),
                               Text(
-                                '${weatherSnapshot.data.main.temp.toStringAsFixed(0)}°C',
+                                '${(weatherSnapshot.data.main.temp - 273.15).toStringAsFixed(0)}°C',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w300,
                                     letterSpacing: 3,
@@ -120,7 +121,7 @@ class _CurrentaWeatherPageState extends State<CurrentaWeatherPage>
                                         children: <TextSpan>[
                                           TextSpan(
                                             text:
-                                                '${weatherSnapshot.data.main.feelsLike.toStringAsFixed(1)}°C',
+                                                '${(weatherSnapshot.data.main.feelsLike - 273.15).toStringAsFixed(0)}°C',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w600,
                                                 letterSpacing: 0.5,

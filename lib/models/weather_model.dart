@@ -132,16 +132,11 @@ class Main {
   });
 
   factory Main.fromJson(Map<String, dynamic> json) => Main(
-        temp: json["temp"] == null ? null : json["temp"].toDouble() - 273.15,
-        feelsLike: json["feels_like"] == null
-            ? null
-            : json["feels_like"].toDouble() - 273.15,
-        tempMin: json["temp_min"] == null
-            ? null
-            : json["temp_min"].toDouble() - 273.15,
-        tempMax: json["temp_max"] == null
-            ? null
-            : json["temp_max"].toDouble() - 273.15,
+        temp: json["temp"] == null ? null : json["temp"].toDouble(),
+        feelsLike:
+            json["feels_like"] == null ? null : json["feels_like"].toDouble(),
+        tempMin: json["temp_min"] == null ? null : json["temp_min"].toDouble(),
+        tempMax: json["temp_max"] == null ? null : json["temp_max"].toDouble(),
         pressure: json["pressure"] == null ? null : json["pressure"],
         humidity: json["humidity"] == null ? null : json["humidity"],
       );
