@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weatherapp/bloc/get_current_location_bloc.dart';
-import 'package:weatherapp/bloc/get_current_weather_bloc.dart';
 import 'package:weatherapp/bloc/get_local_current_weather_bloc.dart';
 import 'package:weatherapp/models/weather_model.dart';
+import 'package:weatherapp/screens/weather_forecast_page.dart';
 
 class CurrentaWeatherPage extends StatefulWidget {
   @override
@@ -37,7 +37,12 @@ class _CurrentaWeatherPageState extends State<CurrentaWeatherPage>
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => new WeatherForeCastPage()));
+        },
         child: Icon(Icons.access_time),
       ),
       body: Container(
