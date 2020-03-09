@@ -1,9 +1,12 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weatherapp/bloc/get_current_location_bloc.dart';
 import 'package:weatherapp/bloc/get_local_current_weather_bloc.dart';
+import 'package:weatherapp/main.dart';
 import 'package:weatherapp/models/weather_model.dart';
 import 'package:weatherapp/screens/weather_forecast_page.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class CurrentaWeatherPage extends StatefulWidget {
   @override
@@ -12,10 +15,14 @@ class CurrentaWeatherPage extends StatefulWidget {
 
 class _CurrentaWeatherPageState extends State<CurrentaWeatherPage>
     with WidgetsBindingObserver {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     getCurrentLocationBloc.getCurrentLocation(context);
+    initializeFirebaseMessaging();
   }
 
   ///Dispose all the BLoc classes here.
@@ -23,11 +30,13 @@ class _CurrentaWeatherPageState extends State<CurrentaWeatherPage>
   void dispose() {
     getCurrentLocationBloc.dispose();
     getLocalCurrentWeatherBloc.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state.toString());
     if (state == AppLifecycleState.resumed) {
       getCurrentLocationBloc.getCurrentLocation(context);
     }
@@ -153,5 +162,48 @@ class _CurrentaWeatherPageState extends State<CurrentaWeatherPage>
             }),
       ),
     );
+  }
+
+  Future<void> initializeFirebaseMessaging() async {
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> msg) async {
+        print("onMessage: $msg");
+        _showNotification(
+            msg['notification']['title'], msg['notification']['body']);
+      },
+      onLaunch: (Map<String, dynamic> msg) async {
+        print("onLaunch: $msg");
+        _showNotification(
+            msg['notification']['title'], msg['notification']['body']);
+      },
+      onResume: (Map<String, dynamic> msg) async {
+        print("onResume: $msg");
+        _showNotification(
+            msg['notification']['title'], msg['notification']['body']);
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(
+            sound: true, badge: true, alert: true, provisional: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+      print("Push Messaging token: $token");
+    });
+  }
+
+  ///Show notifications when app is in foreground.
+  Future<void> _showNotification(String title, String body) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'your channel id', 'your channel name', 'your channel description',
+        importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin
+        .show(0, title, body, platformChannelSpecifics, payload: title);
   }
 }
