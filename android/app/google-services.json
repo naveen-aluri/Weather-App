@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "549443301257",
+    "firebase_url": "https://actions-codelab-25b05.firebaseio.com",
+    "project_id": "actions-codelab-25b05",
+    "storage_bucket": "actions-codelab-25b05.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549443301257:android:d004bbc01664e0f6b27b58",
+        "android_client_info": {
+          "package_name": "com.app.weatherapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549443301257-r3rq68i8k73dukfif7p4r009frlgr876.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXk7xI7p9dSA7YBcf1R5CgO3RZj7bCZmQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549443301257-a108u8lmltdt4ss41819rif0cp1eg48r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "549443301257-l1m9nvparu0lf6h4tfs4v1e7eqdn6cng.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.weatherapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
