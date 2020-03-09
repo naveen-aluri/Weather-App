@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weatherapp/bloc/get_local_weather_forecast_bloc.dart';
 import 'package:weatherapp/bloc/get_weather_history_bloc.dart';
 import 'package:weatherapp/models/weather_history.dart';
 import 'package:weatherapp/utils/sharedpreference_helper.dart';
@@ -14,7 +15,14 @@ class _WeatherForeCastPageState extends State<WeatherForeCastPage> {
   @override
   void initState() {
     super.initState();
+    getLocalWeatherForeCastBloc.getLocalWeatherForeCast();
     getData();
+  }
+
+  @override
+  dispose() {
+    getLocalWeatherForeCastBloc.dispose();
+    super.dispose();
   }
 
   getData() async {
@@ -27,7 +35,7 @@ class _WeatherForeCastPageState extends State<WeatherForeCastPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-          stream: getWeatherHistoryBloc.responseData,
+          stream: getLocalWeatherForeCastBloc.responseData,
           builder: (context, AsyncSnapshot<WeatherHistory> snapshot) {
             if (snapshot.hasData)
               return Padding(

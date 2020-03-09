@@ -19,7 +19,7 @@ class _ForeCastChartState extends State<ForeCastChart> {
       height: 300,
       child: charts.TimeSeriesChart(
         _createData(),
-        animate: true,
+        animate: false,
         defaultRenderer: new charts.LineRendererConfig(includePoints: true),
         secondaryMeasureAxis: new charts.NumericAxisSpec(
             tickProviderSpec: new charts.BasicNumericTickProviderSpec(
